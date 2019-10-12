@@ -1,6 +1,5 @@
 package com.castrorr.itunessearchlist.model.dataclass
 
-import com.google.gson.annotations.SerializedName
 import com.squareup.moshi.Json
 
 data class Results(
