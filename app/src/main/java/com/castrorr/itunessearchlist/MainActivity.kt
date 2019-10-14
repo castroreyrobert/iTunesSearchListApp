@@ -20,10 +20,9 @@ class MainActivity : AppCompatActivity(), SearchiTunesListFragment.OnFragmentInt
         supportFragmentManager
             .beginTransaction()
             // 2
-            .replace(R.id.container, searchiTunesListFragment, "dogDetails")
+            .replace(R.id.container, searchiTunesListFragment)
             // 3
             .addToBackStack(null)
             .commit()
-
     }
 }

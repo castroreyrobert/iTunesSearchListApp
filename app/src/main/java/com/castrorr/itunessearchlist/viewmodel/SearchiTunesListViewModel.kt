@@ -13,7 +13,7 @@ import com.castrorr.itunessearchlist.setSuccess
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class SearchiTunesListViewModel(): ViewModel() {
+class SearchiTunesListViewModel: ViewModel() {
 
     val trackList = MutableLiveData< Resource<List<Track>>>()
     private val compositeDisposable = CompositeDisposable()

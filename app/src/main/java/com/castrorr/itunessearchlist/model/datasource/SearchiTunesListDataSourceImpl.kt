@@ -14,7 +14,7 @@ class SearchiTunesListDataSourceImpl
      *
      * @return Observable<List<Track>>
      */
-    private val retrofitBuilder:RetrofitBuilder = RetrofitBuilderImpl()
+    private val retrofitBuilder:RetrofitBuilder = RetrofitBuilderImpl
     private val apiService: SearchService = retrofitBuilder.getiTunesSearchService().create(SearchService::class.java)
     override fun getSearchiTunesList(): Single<Results> =
         apiService.fetchAllSearchList().map { it.mapToDomain()}

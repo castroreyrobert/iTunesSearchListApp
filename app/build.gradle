@@ -38,17 +38,20 @@ dependencies {
     // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     // alternatively - just ViewModel
-    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version" // For Kotlin use lifecycle-viewmodel-ktx
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
+    // For Kotlin use lifecycle-viewmodel-ktx
     // alternatively - just LiveData
     implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
     // alternatively - Lifecycles only (no ViewModel or LiveData). Some UI
     //     AndroidX libraries use this lightweight import for Lifecycle
     implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle_version"
-    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version" // For Kotlin use kapt instead of annotationProcessor
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+    // For Kotlin use kapt instead of annotationProcessor
     // alternately - if using Java8, use the following instead of lifecycle-compiler
     implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
     // optional - ReactiveStreams support for LiveData
-    implementation "androidx.lifecycle:lifecycle-reactivestreams:$lifecycle_version" // For Kotlin use lifecycle-reactivestreams-ktx
+    implementation "androidx.lifecycle:lifecycle-reactivestreams:$lifecycle_version"
+    // For Kotlin use lifecycle-reactivestreams-ktx
     // optional - Test helpers for LiveData
     testImplementation "androidx.arch.core:core-testing:$lifecycle_version"
 
@@ -68,7 +71,6 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
-    implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:4.0.0"
     implementation "com.squareup.retrofit2:converter-scalars:$retrofitVersion"
 
@@ -76,6 +78,11 @@ dependencies {
     def rxJavaVersion = '2.0.1'
     implementation "io.reactivex.rxjava2:rxandroid:$rxJavaVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+
+    implementation 'com.squareup.moshi:moshi-kotlin:1.7.0'
+    implementation 'com.serjltt.moshi:moshi-lazy-adapters:1.0'
+    implementation "com.squareup.moshi:moshi-adapters:1.7.0"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
 
     implementation("com.squareup.okhttp3:okhttp:4.2.1")
 

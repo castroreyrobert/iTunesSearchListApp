@@ -7,19 +7,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import android.widget.TextView
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProviders
-import com.castrorr.itunessearchlist.R
-import com.castrorr.itunessearchlist.Resource
-import com.castrorr.itunessearchlist.ResourceState
-import com.castrorr.itunessearchlist.model.dataclass.Track
-import com.castrorr.itunessearchlist.viewmodel.SearchiTunesListViewModel
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.search_list_fragment.*
 
+import com.castrorr.itunessearchlist.R
+
+// TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -27,25 +18,17 @@ private const val ARG_PARAM2 = "param2"
 /**
  * A simple [Fragment] subclass.
  * Activities that contain this fragment must implement the
- * [SearchiTunesListFragment.OnFragmentInteractionListener] interface
+ * [SearchiTunesDetailFragment.OnFragmentInteractionListener] interface
  * to handle interaction events.
- * Use the [SearchiTunesListFragment.newInstance] factory method to
+ * Use the [SearchiTunesDetailFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class SearchiTunesListFragment : Fragment() {
+class SearchiTunesDetailFragment : Fragment() {
+    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
-    private val itemClick: (Track) -> Unit =
-        {
-           //ShowDetailsFragment
-        }
 
-    private val snackBar by lazy {
-        Snackbar.make(swipe_refresh, getString(R.string.error), Snackbar.LENGTH_INDEFINITE)
-            .setAction(getString(R.string.retry)) {// viewModel.getTrackList()
-                 }
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -58,30 +41,11 @@ class SearchiTunesListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-       return inflater.inflate(R.layout.search_list_fragment, container,false)
-        }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val adapter = SearchListRecyclerViewAdapter(context!!, itemClick)
-        search_list_recyclerView.adapter = adapter
-        val viewModel = ViewModelProviders.of(this)[SearchiTunesListViewModel::class.java]
-         viewModel.trackList.observe(this, Observer {  })
-        //swipe_refresh.setOnRefreshListener { viewModel.getTrackList() }
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_search_itunes_detail, container, false)
     }
 
-   /* private fun updatePosts(resource: Resource<List<Track>>?) {
-        resource?.let {
-            when (it.state) {
-                ResourceState.LOADING -> progressbar.visibility = View.VISIBLE
-                ResourceState.SUCCESS -> progressbar.visibility = View.GONE
-                ResourceState.ERROR ->  progressbar.visibility = View.GONE
-            }
-            it.data?.let { adapter.submitList(it) }
-            it.message?.let { snackBar.show() }
-        }
-    }*/
-
+    // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
     }
@@ -91,7 +55,7 @@ class SearchiTunesListFragment : Fragment() {
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException("$context must implement OnFragmentInteractionListener")
+            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
         }
     }
 
@@ -112,8 +76,10 @@ class SearchiTunesListFragment : Fragment() {
      * for more information.
      */
     interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
     }
+
     companion object {
         /**
          * Use this factory method to create a new instance of
@@ -121,11 +87,12 @@ class SearchiTunesListFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment SearchiTunesListFragment.
+         * @return A new instance of fragment SearchiTunesDetailFragment.
          */
+        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            SearchiTunesListFragment().apply {
+            SearchiTunesDetailFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
