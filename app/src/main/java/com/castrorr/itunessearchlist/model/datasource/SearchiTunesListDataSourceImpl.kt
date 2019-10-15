@@ -5,6 +5,7 @@ import com.castrorr.itunessearchlist.model.RetrofitBuilderImpl
 import com.castrorr.itunessearchlist.model.SearchService
 import com.castrorr.itunessearchlist.model.dataclass.Results
 import com.castrorr.itunessearchlist.model.dataclass.mapToDomain
+import io.reactivex.Observable
 import io.reactivex.Single
 
 class SearchiTunesListDataSourceImpl
@@ -16,6 +17,6 @@ class SearchiTunesListDataSourceImpl
      */
     private val retrofitBuilder:RetrofitBuilder = RetrofitBuilderImpl
     private val apiService: SearchService = retrofitBuilder.getiTunesSearchService().create(SearchService::class.java)
-    override fun getSearchiTunesList(): Single<Results> =
-        apiService.fetchAllSearchList().map { it.mapToDomain()}
+    override fun getSearchiTunesList(): Observable<Results> =
+        RetrofitBuilderImpl.getiTunesSearchService().create(SearchService::class.java).fetchAllSearchList().map { it.mapToDomain()}
 }

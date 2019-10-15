@@ -5,28 +5,62 @@ import androidx.lifecycle.ViewModel
 import com.castrorr.itunessearchlist.Resource
 import com.castrorr.itunessearchlist.model.dataclass.Track
 import com.castrorr.itunessearchlist.model.dataclass.mapToTrackList
-import com.castrorr.itunessearchlist.model.repository.SearchiTunesListRepository
 import com.castrorr.itunessearchlist.model.repository.SearchiTunesListRepositoryImpl
 import com.castrorr.itunessearchlist.setError
 import com.castrorr.itunessearchlist.setLoading
 import com.castrorr.itunessearchlist.setSuccess
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 
 class SearchiTunesListViewModel: ViewModel() {
 
-    val trackList = MutableLiveData< Resource<List<Track>>>()
+    val trackList = MutableLiveData<Resource<List<Track>>>()
+    private lateinit var disposable: Disposable
     private val compositeDisposable = CompositeDisposable()
     private val repo = SearchiTunesListRepositoryImpl()
+
+    init {
+        loadList()
+    }
+
     fun getTrackList() =
         compositeDisposable.add(repo.getSearchiTunesList()
-            .doOnSubscribe{trackList.setLoading()}
+                .doOnSubscribe { trackList.setLoading() }
+                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .map { it.mapToTrackList() }
+                .subscribe({ trackList.setSuccess(it) }, { trackList.setError(it.message) })
+            )
+    fun loadList() {
+        disposable = repo.getSearchiTunesList()
             .subscribeOn(Schedulers.io())
-            .map { it.mapToTrackList() }
-            .subscribe({trackList.setSuccess(it)}, {trackList.setError(it.message)}))
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe{onRetrievePostListStart()}
+            .doOnTerminate { onRetrievePostListFinish() }
+            .subscribe({onRetrievePostListSuccess()}, {onRetrievePostListError()})
+    }
 
-    override fun onCleared() {
+    private fun onRetrievePostListStart() {
+
+    }
+
+    private fun onRetrievePostListFinish() {
+
+    }
+
+    private fun onRetrievePostListSuccess(){
+
+    }
+
+    private fun onRetrievePostListError(){
+
+    }
+
+
+  override fun onCleared() {
         compositeDisposable.dispose()
+        disposable.dispose()
         super.onCleared()
     }
 }

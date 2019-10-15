@@ -27,7 +27,7 @@ class SearchListRecyclerViewAdapter(val context: Context, private val itemClick:
         RecyclerView.ViewHolder(
             LayoutInflater.from(context).inflate(
                 R.layout.search_list_item,
-                parent
+                parent,false
             )
         ) {
 

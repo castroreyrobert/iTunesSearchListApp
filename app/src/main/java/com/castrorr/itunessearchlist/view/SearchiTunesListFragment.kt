@@ -9,12 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.castrorr.itunessearchlist.R
 import com.castrorr.itunessearchlist.Resource
 import com.castrorr.itunessearchlist.ResourceState
+import com.castrorr.itunessearchlist.databinding.SearchListFragmentBinding
 import com.castrorr.itunessearchlist.model.dataclass.Track
 import com.castrorr.itunessearchlist.viewmodel.SearchiTunesListViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -35,6 +38,7 @@ private const val ARG_PARAM2 = "param2"
 class SearchiTunesListFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var binding: SearchListFragmentBinding
     private var listener: OnFragmentInteractionListener? = null
     private val itemClick: (Track) -> Unit =
         {
@@ -58,29 +62,33 @@ class SearchiTunesListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-       return inflater.inflate(R.layout.search_list_fragment, container,false)
+        val contentView = inflater.inflate(R.layout.search_list_fragment, container, false);
+        binding = SearchListFragmentBinding.bind(contentView)
+        binding.searchListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        return contentView
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val viewModel = ViewModelProviders.of(this).get(SearchiTunesListViewModel::class.java)
+        viewModel.trackList.observe(this, Observer {  })
+        binding.viewModel = viewModel
         val adapter = SearchListRecyclerViewAdapter(context!!, itemClick)
         search_list_recyclerView.adapter = adapter
-        val viewModel = ViewModelProviders.of(this)[SearchiTunesListViewModel::class.java]
-         viewModel.trackList.observe(this, Observer {  })
-        //swipe_refresh.setOnRefreshListener { viewModel.getTrackList() }
+        swipe_refresh.setOnRefreshListener { viewModel.getTrackList() }
     }
-
-   /* private fun updatePosts(resource: Resource<List<Track>>?) {
-        resource?.let {
-            when (it.state) {
-                ResourceState.LOADING -> progressbar.visibility = View.VISIBLE
-                ResourceState.SUCCESS -> progressbar.visibility = View.GONE
-                ResourceState.ERROR ->  progressbar.visibility = View.GONE
-            }
-            it.data?.let { adapter.submitList(it) }
-            it.message?.let { snackBar.show() }
-        }
-    }*/
+//
+//    private fun updatePosts(resource: Resource<List<Track>>?) {
+//        resource?.let {
+//            when (it.state) {
+//                ResourceState.LOADING -> progressbar.visibility = View.VISIBLE
+//                ResourceState.SUCCESS -> progressbar.visibility = View.GONE
+//                ResourceState.ERROR ->  progressbar.visibility = View.GONE
+//            }
+//            it.data?.let { adapter.submitList(it) }
+//            it.message?.let { snackBar.show() }
+//        }
+//    }
 
     fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
