@@ -40,6 +40,7 @@ class SearchiTunesListFragment : Fragment() {
     private var param2: String? = null
     private lateinit var binding: SearchListFragmentBinding
     private var listener: OnFragmentInteractionListener? = null
+    private lateinit var adapter: SearchListRecyclerViewAdapter
     private val itemClick: (Track) -> Unit =
         {
            //ShowDetailsFragment
@@ -62,33 +63,30 @@ class SearchiTunesListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val contentView = inflater.inflate(R.layout.search_list_fragment, container, false);
+        val contentView = inflater.inflate(R.layout.search_list_fragment, container, false)
+        adapter = SearchListRecyclerViewAdapter(context!!, itemClick)
+        val viewModel = ViewModelProviders.of(this).get(SearchiTunesListViewModel::class.java)
         binding = SearchListFragmentBinding.bind(contentView)
+        binding.viewModel = viewModel
         binding.searchListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+        binding.searchListRecyclerView.adapter = adapter
+        viewModel.trackList.observe(this, Observer { updatePosts(it) })
+        //swipe_refresh.setOnRefreshListener { viewModel.loadList() }
+
         return contentView
         }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val viewModel = ViewModelProviders.of(this).get(SearchiTunesListViewModel::class.java)
-        viewModel.trackList.observe(this, Observer {  })
-        binding.viewModel = viewModel
-        val adapter = SearchListRecyclerViewAdapter(context!!, itemClick)
-        search_list_recyclerView.adapter = adapter
-        swipe_refresh.setOnRefreshListener { viewModel.getTrackList() }
+    private fun updatePosts(resource: Resource<List<Track>>?) {
+        resource?.let {
+           /* when (it.state) {
+                ResourceState.LOADING -> //swipe_refresh.startRefreshing()
+                ResourceState.SUCCESS -> //swipe_refresh.stopRefreshing()
+                ResourceState.ERROR -> //swipe_refresh.stopRefreshing()
+            }*/
+            it.data?.let { adapter.submitList(it) }
+            it.message?.let { snackBar.show() }
+        }
     }
-//
-//    private fun updatePosts(resource: Resource<List<Track>>?) {
-//        resource?.let {
-//            when (it.state) {
-//                ResourceState.LOADING -> progressbar.visibility = View.VISIBLE
-//                ResourceState.SUCCESS -> progressbar.visibility = View.GONE
-//                ResourceState.ERROR ->  progressbar.visibility = View.GONE
-//            }
-//            it.data?.let { adapter.submitList(it) }
-//            it.message?.let { snackBar.show() }
-//        }
-//    }
 
     fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
