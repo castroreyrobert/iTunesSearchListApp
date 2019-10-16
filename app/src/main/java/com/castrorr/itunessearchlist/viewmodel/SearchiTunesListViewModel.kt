@@ -16,7 +16,7 @@ import io.reactivex.schedulers.Schedulers
 
 class SearchiTunesListViewModel: ViewModel() {
 
-    val trackList = MutableLiveData<Resource<List<Track>>>()
+    val trackList = MutableLiveData<List<Track>>()
     private lateinit var disposable: Disposable
     private val compositeDisposable = CompositeDisposable()
     private val repo = SearchiTunesListRepositoryImpl()
@@ -25,20 +25,15 @@ class SearchiTunesListViewModel: ViewModel() {
         loadList()
     }
 
-    fun getTrackList() =
-        compositeDisposable.add(repo.getSearchiTunesList()
-                .doOnSubscribe { trackList.setLoading() }
-                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .map { it.mapToTrackList() }
-                .subscribe({ trackList.setSuccess(it) }, { trackList.setError(it.message) })
-            )
     fun loadList() {
         disposable = repo.getSearchiTunesList()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe{onRetrievePostListStart()}
             .doOnTerminate { onRetrievePostListFinish() }
-            .subscribe({onRetrievePostListSuccess()}, {onRetrievePostListError()})
+            .subscribe({onRetrievePostListSuccess()
+            trackList.value = it}, {onRetrievePostListError()})
+
     }
 
     private fun onRetrievePostListStart() {

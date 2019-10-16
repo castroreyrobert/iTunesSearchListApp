@@ -76,15 +76,15 @@ class SearchiTunesListFragment : Fragment() {
         return contentView
         }
 
-    private fun updatePosts(resource: Resource<List<Track>>?) {
+    private fun updatePosts(resource: List<Track>?) {
         resource?.let {
            /* when (it.state) {
                 ResourceState.LOADING -> //swipe_refresh.startRefreshing()
                 ResourceState.SUCCESS -> //swipe_refresh.stopRefreshing()
                 ResourceState.ERROR -> //swipe_refresh.stopRefreshing()
             }*/
-            it.data?.let { adapter.submitList(it) }
-            it.message?.let { snackBar.show() }
+            it.let { adapter.submitList(it) }
+           /* it.let { snackBar.show() }*/
         }
     }
 
