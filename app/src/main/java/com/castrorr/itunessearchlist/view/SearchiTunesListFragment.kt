@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.castrorr.itunessearchlist.R
 import com.castrorr.itunessearchlist.Resource
 import com.castrorr.itunessearchlist.ResourceState
@@ -38,19 +39,21 @@ private const val ARG_PARAM2 = "param2"
 class SearchiTunesListFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
-    private lateinit var binding: SearchListFragmentBinding
     private var listener: OnFragmentInteractionListener? = null
+
+    private lateinit var binding: SearchListFragmentBinding
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var adapter: SearchListRecyclerViewAdapter
+
+    private val viewModel by lazy {
+        ViewModelProviders.of(this).get(SearchiTunesListViewModel::class.java)
+    }
+
     private val itemClick: (Track) -> Unit =
         {
            //ShowDetailsFragment
         }
 
-    private val snackBar by lazy {
-        Snackbar.make(swipe_refresh, getString(R.string.error), Snackbar.LENGTH_INDEFINITE)
-            .setAction(getString(R.string.retry)) {// viewModel.getTrackList()
-                 }
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -64,28 +67,34 @@ class SearchiTunesListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val contentView = inflater.inflate(R.layout.search_list_fragment, container, false)
-        adapter = SearchListRecyclerViewAdapter(context!!, itemClick)
-        val viewModel = ViewModelProviders.of(this).get(SearchiTunesListViewModel::class.java)
+        adapter = SearchListRecyclerViewAdapter(itemClick)
         binding = SearchListFragmentBinding.bind(contentView)
+        swipeRefreshLayout = contentView.findViewById(R.id.swipe_refresh) as SwipeRefreshLayout
         binding.viewModel = viewModel
         binding.searchListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         binding.searchListRecyclerView.adapter = adapter
         viewModel.trackList.observe(this, Observer { updatePosts(it) })
-        //swipe_refresh.setOnRefreshListener { viewModel.loadList() }
+        swipeRefreshLayout.setOnRefreshListener { viewModel.loadList() }
 
         return contentView
         }
 
-    private fun updatePosts(resource: List<Track>?) {
+    private fun updatePosts(resource: Resource<List<Track>>?) {
         resource?.let {
-           /* when (it.state) {
-                ResourceState.LOADING -> //swipe_refresh.startRefreshing()
-                ResourceState.SUCCESS -> //swipe_refresh.stopRefreshing()
-                ResourceState.ERROR -> //swipe_refresh.stopRefreshing()
-            }*/
-            it.let { adapter.submitList(it) }
-           /* it.let { snackBar.show() }*/
+            when (it.state) {
+                ResourceState.LOADING -> swipeRefreshLayout.isRefreshing = true
+                ResourceState.SUCCESS -> swipeRefreshLayout.isRefreshing = false
+                ResourceState.ERROR -> swipeRefreshLayout.isRefreshing = false
+            }
+            it.data?.let { trackList -> adapter.submitList(trackList) }
+            it.message?.let { errorMessage -> showSnackBar(message = errorMessage) }
         }
+    }
+
+    private fun showSnackBar(message: String){
+        Snackbar.make(swipeRefreshLayout, message, Snackbar.LENGTH_INDEFINITE)
+                .setAction(getString(R.string.retry)) {viewModel.loadList()
+        }.show()
     }
 
     fun onButtonPressed(uri: Uri) {
@@ -105,6 +114,7 @@ class SearchiTunesListFragment : Fragment() {
         super.onDetach()
         listener = null
     }
+
 
     /**
      * This interface must be implemented by activities that contain this

@@ -1,22 +1,34 @@
 package com.castrorr.itunessearchlist.model.datasource
 
-import com.castrorr.itunessearchlist.model.RetrofitBuilder
 import com.castrorr.itunessearchlist.model.RetrofitBuilderImpl
 import com.castrorr.itunessearchlist.model.SearchService
 import com.castrorr.itunessearchlist.model.dataclass.Results
 import com.castrorr.itunessearchlist.model.dataclass.mapToDomain
 import io.reactivex.Observable
-import io.reactivex.Single
+
 
 class SearchiTunesListDataSourceImpl
     : SearchiTunesListDataSource{
 
+    private lateinit var results: Results
     /**
      *
      * @return Observable<List<Track>>
      */
-    private val retrofitBuilder:RetrofitBuilder = RetrofitBuilderImpl
-    private val apiService: SearchService = retrofitBuilder.getiTunesSearchService().create(SearchService::class.java)
+    private val retrofitBuilder by lazy {  RetrofitBuilderImpl}
+    private val apiService by lazy {  retrofitBuilder.getiTunesSearchService().create(SearchService::class.java) }
+
     override fun getSearchiTunesList(): Observable<Results> =
-        RetrofitBuilderImpl.getiTunesSearchService().create(SearchService::class.java).fetchAllSearchList().map { it.mapToDomain()}
+        apiService.fetchAllSearchList().map { results = it.mapToDomain()
+        results }
+
+
+    override fun saveSearchiTunesListToCache(results: Results) {
+        this.results = results.copy()
+        this.results
+    }
+    fun cacheInMemory(results: Results) {
+        this.results
+    }
+
 }

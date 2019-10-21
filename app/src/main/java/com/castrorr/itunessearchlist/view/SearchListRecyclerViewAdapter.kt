@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.castrorr.itunessearchlist.R
 import com.castrorr.itunessearchlist.model.dataclass.Track
 import com.nostra13.universalimageloader.core.ImageLoader
@@ -15,7 +16,7 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 import kotlinx.android.synthetic.main.search_list_item.view.*
 
 
-class SearchListRecyclerViewAdapter(val context: Context, private val itemClick: (Track) -> Unit):
+class SearchListRecyclerViewAdapter( private val itemClick: (Track) -> Unit):
     ListAdapter<Track, SearchListRecyclerViewAdapter.ViewHolder> ((PostDiffCallback())) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,7 +29,7 @@ class SearchListRecyclerViewAdapter(val context: Context, private val itemClick:
 
     inner class ViewHolder(parent: ViewGroup) :
         RecyclerView.ViewHolder(
-            LayoutInflater.from(context).inflate(
+            LayoutInflater.from(parent.context).inflate(
               R.layout.search_list_item,
                 parent,false
             )
@@ -43,14 +44,7 @@ class SearchListRecyclerViewAdapter(val context: Context, private val itemClick:
         }
 
         private fun loadAvatar(imageUrl: String) {
-           /* val imageLoader = ImageLoader.getInstance() // Get singleton instance
-            // Load image, decode it to Bitmap and return Bitmap to callback
-            imageLoader.loadImage(imageUrl, object : SimpleImageLoadingListener() {
-                override fun onLoadingComplete(imageUri: String, view: View, loadedImage: Bitmap) {
-                    val bmp = imageLoader.loadImageSync(imageUri)
-                    itemView.imageViewArtwork.setImageBitmap(bmp);
-                }
-            })*/
+            Glide.with(itemView).load(imageUrl).into(itemView.imageViewArtwork)
         }
 
     }

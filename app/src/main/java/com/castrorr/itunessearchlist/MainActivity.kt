@@ -1,10 +1,9 @@
 package com.castrorr.itunessearchlist
 
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.castrorr.itunessearchlist.view.SearchiTunesListFragment
-import com.castrorr.itunessearchlist.viewmodel.SearchiTunesListViewModel
 
 class MainActivity : AppCompatActivity(), SearchiTunesListFragment.OnFragmentInteractionListener {
 

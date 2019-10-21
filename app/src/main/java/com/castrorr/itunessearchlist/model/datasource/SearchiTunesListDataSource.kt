@@ -6,4 +6,5 @@ import io.reactivex.Single
 
 interface SearchiTunesListDataSource {
     fun getSearchiTunesList(): Observable<Results>
+    fun saveSearchiTunesListToCache(results: Results)
 }
