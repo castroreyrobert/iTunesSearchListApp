@@ -71,10 +71,14 @@ class SearchiTunesListFragment : Fragment() {
         binding = SearchListFragmentBinding.bind(contentView)
         swipeRefreshLayout = contentView.findViewById(R.id.swipe_refresh) as SwipeRefreshLayout
         binding.viewModel = viewModel
+        if(savedInstanceState == null)
+            viewModel.loadList(true)
+
         binding.searchListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         binding.searchListRecyclerView.adapter = adapter
         viewModel.trackList.observe(this, Observer { updatePosts(it) })
-        swipeRefreshLayout.setOnRefreshListener { viewModel.getTrackList() }
+        viewModel.sharedPreferenceLiveData.observe(this, Observer {/**TODO: */})
+        swipeRefreshLayout.setOnRefreshListener { viewModel.loadList(true) }
 
         return contentView
         }
@@ -93,7 +97,7 @@ class SearchiTunesListFragment : Fragment() {
 
     private fun showSnackBar(message: String){
         Snackbar.make(swipeRefreshLayout, message, Snackbar.LENGTH_INDEFINITE)
-                .setAction(getString(R.string.retry)) {viewModel.getTrackList()
+                .setAction(getString(R.string.retry)) {viewModel.loadList(true)
         }.show()
     }
 

@@ -26,6 +26,5 @@ class SharedPrefencesLiveData(private val sharedPreferences: SharedPreferences):
     override fun onInactive() {
         super.onInactive()
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener)
-
     }
 }

@@ -1,6 +1,6 @@
 package com.castrorr.itunessearchlist.model.dataclass
 
-class   User (
+class User (
     var previouslyVisitedDate: String?,
     var lastScreenVisited: Int?,
     var savedTrack: Track?,
