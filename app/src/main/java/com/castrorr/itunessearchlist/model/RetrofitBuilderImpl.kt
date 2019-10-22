@@ -11,8 +11,16 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.*
 
+/**
+ *  This object is used to build Retrofit and other webservice api
+ *
+ */
 
 object RetrofitBuilderImpl : RetrofitBuilder {
+
+    /**
+     * returns retrofit instance
+     */
 
     override fun getiTunesSearchService(): Retrofit {
         val httpLoggingInterceptor = HttpLoggingInterceptor()
