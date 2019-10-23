@@ -3,11 +3,13 @@ package com.castrorr.itunessearchlist
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.castrorr.itunessearchlist.view.SearchiTunesDetailFragment
 import com.castrorr.itunessearchlist.view.SearchiTunesListFragment
 
 class MainActivity : AppCompatActivity(), SearchiTunesListFragment.OnFragmentInteractionListener {
 
     override fun onFragmentInteraction(uri: Uri) {
+
 
     }
 

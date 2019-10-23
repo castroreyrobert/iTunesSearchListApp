@@ -1,9 +1,6 @@
 package com.castrorr.itunessearchlist.view
 
-import android.content.Context
-import android.graphics.Bitmap
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -11,8 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.castrorr.itunessearchlist.R
 import com.castrorr.itunessearchlist.model.dataclass.Track
-import com.nostra13.universalimageloader.core.ImageLoader
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener
 import kotlinx.android.synthetic.main.search_list_item.view.*
 
 
@@ -36,7 +31,7 @@ class SearchListRecyclerViewAdapter( private val itemClick: (Track) -> Unit):
         ) {
 
         fun bind(item: Track) {
-            loadAvatar(item.artworkBig)
+            loadAvatar(item.artworkSmall)
             itemView.textViewTrackName.text = item.trackName
             itemView.textViewGenre.text = item.genre
             itemView.textViewPrice.text = item.trackPrice.toString()

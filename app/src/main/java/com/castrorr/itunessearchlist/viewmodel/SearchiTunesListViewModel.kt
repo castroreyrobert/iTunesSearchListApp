@@ -9,7 +9,6 @@ import com.castrorr.itunessearchlist.*
 import com.castrorr.itunessearchlist.Constants.Companion.PREF_KEY_USER
 import com.castrorr.itunessearchlist.model.dataclass.Track
 import com.castrorr.itunessearchlist.model.dataclass.User
-import com.castrorr.itunessearchlist.model.local.SharedPrefencesLiveData
 import com.castrorr.itunessearchlist.model.repository.SearchiTunesListRepositoryImpl
 import com.google.gson.Gson
 import io.reactivex.Observable
@@ -25,9 +24,10 @@ class SearchiTunesListViewModel (application: Application): AndroidViewModel(app
     private val compositeDisposable = CompositeDisposable()
     private val sharedPreferences = application.getSharedPreferences(Constants.PREF_KEY,Context.MODE_PRIVATE)
     private val repo = SearchiTunesListRepositoryImpl(sharedPreferences)
+    private lateinit var  user: User
 
     val trackList = MutableLiveData<Resource<List<Track>>>()
-    val sharedPreferenceLiveData = SharedPrefencesLiveData(sharedPreferences)
+    //val sharedPreferenceLiveData = SharedPrefencesLiveData(sharedPreferences)
     val liveSelectedTaskList = Observable.create<User> { emitter ->
 
         val sharedPreferencesListener = SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
@@ -44,6 +44,7 @@ class SearchiTunesListViewModel (application: Application): AndroidViewModel(app
         val userString = sharedPreferences.getString(PREF_KEY_USER, null)
         val user = Gson().fromJson(userString, User::class.java)
         emitter.onNext(user)
+        this.user = User(user.previouslyVisitedDate, user.lastScreenVisited, user.savedTrack, user.savedTrackList);
         sharedPreferences.registerOnSharedPreferenceChangeListener(sharedPreferencesListener)
     }
 
@@ -75,17 +76,17 @@ class SearchiTunesListViewModel (application: Application): AndroidViewModel(app
 
     }
 
-    private fun saveUser(user: User){
+    fun saveUser(trackList: List<Track>){
+        user.savedTrackList = trackList
         val userString = Gson().toJson(user, User::class.java)
         val editor = sharedPreferences.edit()
-        editor.putString(Constants.PREF_KEY_USER,userString)
+        editor.putString(PREF_KEY_USER,userString)
         editor.apply()
     }
 
 
     override fun onCleared() {
         disposable.dispose()
-        compositeDisposable.dispose()
         super.onCleared()
     }
 

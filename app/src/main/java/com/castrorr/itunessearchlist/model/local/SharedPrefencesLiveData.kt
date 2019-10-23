@@ -6,7 +6,11 @@ import com.castrorr.itunessearchlist.Constants
 import com.castrorr.itunessearchlist.model.dataclass.User
 import com.google.gson.Gson
 
-class SharedPrefencesLiveData(private val sharedPreferences: SharedPreferences): LiveData<User>() {
+
+
+abstract class SharedPrefencesLiveData(private val sharedPreferences: SharedPreferences): LiveData<User>() {
+
+
 
     private val listener = SharedPreferences.OnSharedPreferenceChangeListener{
             sharedPreferences, key ->
@@ -15,6 +19,8 @@ class SharedPrefencesLiveData(private val sharedPreferences: SharedPreferences):
             value =  Gson().fromJson(userString, User::class.java)
         }
     }
+
+     //abstract fun getValueFromPreferences(key: String, defValue: T): T
 
     override fun onActive() {
         super.onActive()

@@ -3,15 +3,11 @@ package com.castrorr.itunessearchlist.view
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import android.widget.TextView
-import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -22,7 +18,6 @@ import com.castrorr.itunessearchlist.databinding.SearchListFragmentBinding
 import com.castrorr.itunessearchlist.model.dataclass.Track
 import com.castrorr.itunessearchlist.viewmodel.SearchiTunesListViewModel
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.search_list_fragment.*
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
@@ -51,7 +46,7 @@ class SearchiTunesListFragment : Fragment() {
 
     private val itemClick: (Track) -> Unit =
         {
-           //ShowDetailsFragment
+           showListDetailFragment()
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,8 +71,9 @@ class SearchiTunesListFragment : Fragment() {
 
         binding.searchListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         binding.searchListRecyclerView.adapter = adapter
+        binding.searchListRecyclerView.setHasFixedSize(true)
         viewModel.trackList.observe(this, Observer { updatePosts(it) })
-        viewModel.sharedPreferenceLiveData.observe(this, Observer {/**TODO: */})
+        //viewModel.sharedPreferenceLiveData.observe(this, Observer {viewModel.liveSelectedTaskList})
         swipeRefreshLayout.setOnRefreshListener { viewModel.loadList(true) }
 
         return contentView
@@ -90,7 +86,8 @@ class SearchiTunesListFragment : Fragment() {
                 ResourceState.SUCCESS -> swipeRefreshLayout.isRefreshing = false
                 ResourceState.ERROR -> swipeRefreshLayout.isRefreshing = false
             }
-            it.data?.let { trackList -> adapter.submitList(trackList) }
+            it.data?.let { trackList -> adapter.submitList(trackList)
+            }
             it.message?.let { errorMessage -> showSnackBar(message = errorMessage) }
         }
     }
@@ -99,6 +96,18 @@ class SearchiTunesListFragment : Fragment() {
         Snackbar.make(swipeRefreshLayout, message, Snackbar.LENGTH_INDEFINITE)
                 .setAction(getString(R.string.retry)) {viewModel.loadList(true)
         }.show()
+    }
+
+    private fun showListDetailFragment(){
+        val searchiTunesDetailFragment =
+            SearchiTunesDetailFragment.newInstance("test","test")
+        fragmentManager!!
+            .beginTransaction()
+            // 2
+            .add(R.id.container, searchiTunesDetailFragment)
+            // 3
+            .addToBackStack(null)
+            .commit()
     }
 
     fun onButtonPressed(uri: Uri) {
