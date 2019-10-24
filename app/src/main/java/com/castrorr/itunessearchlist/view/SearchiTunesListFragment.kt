@@ -18,6 +18,7 @@ import com.castrorr.itunessearchlist.databinding.SearchListFragmentBinding
 import com.castrorr.itunessearchlist.model.dataclass.Track
 import com.castrorr.itunessearchlist.viewmodel.SearchiTunesListViewModel
 import com.google.android.material.snackbar.Snackbar
+import java.io.Serializable
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
@@ -46,7 +47,7 @@ class SearchiTunesListFragment : Fragment() {
 
     private val itemClick: (Track) -> Unit =
         {
-           showListDetailFragment()
+           showListDetailFragment(it)
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,13 +99,13 @@ class SearchiTunesListFragment : Fragment() {
         }.show()
     }
 
-    private fun showListDetailFragment(){
+    private fun showListDetailFragment(track: Track){
         val searchiTunesDetailFragment =
-            SearchiTunesDetailFragment.newInstance("test","test")
+            SearchiTunesDetailFragment.newInstance(track,"test")
         fragmentManager!!
             .beginTransaction()
             // 2
-            .add(R.id.container, searchiTunesDetailFragment)
+            .replace(R.id.container, searchiTunesDetailFragment)
             // 3
             .addToBackStack(null)
             .commit()

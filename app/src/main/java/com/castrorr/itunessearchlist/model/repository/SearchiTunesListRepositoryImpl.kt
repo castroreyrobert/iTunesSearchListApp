@@ -6,7 +6,7 @@ import com.castrorr.itunessearchlist.model.datasource.SearchiTunesListDataSource
 import com.castrorr.itunessearchlist.model.datasource.SearchiTunesListDataSourceImpl
 import io.reactivex.Observable
 
-class SearchiTunesListRepositoryImpl(private val sharedPreference: SharedPreferences)
+class SearchiTunesListRepositoryImpl
     : SearchiTunesListRepository {
 
     private val searchiTunesListDataSource: SearchiTunesListDataSource = SearchiTunesListDataSourceImpl()

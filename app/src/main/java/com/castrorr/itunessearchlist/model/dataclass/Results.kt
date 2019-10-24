@@ -1,6 +1,7 @@
 package com.castrorr.itunessearchlist.model.dataclass
 
 import com.squareup.moshi.Json
+import java.io.Serializable
 
 data class Results(
     @field:Json (name = "results") val results : List<Track>,
@@ -17,6 +18,6 @@ data class Track (
     @field:Json(name = "trackPrice") val trackPrice: Float,
     @field:Json(name = "primaryGenreName") val genre: String,
     @field:Json(name = "longDescription") val longDescription: String
-)
+):Serializable
 fun List<Track>.mapToTrackList() : List<Track> = map { it.mapToDomain() }
 fun Track.mapToDomain(): Track = Track(trackId, trackName, artworkSmall, artworkBig, trackPrice, genre, longDescription)
