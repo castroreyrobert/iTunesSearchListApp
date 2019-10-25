@@ -12,7 +12,8 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.*
 
 /**
- *  This object is used to build Retrofit and other webservice api
+ *  This object is used to build Retrofit
+ *  and other webservice api
  *
  */
 
