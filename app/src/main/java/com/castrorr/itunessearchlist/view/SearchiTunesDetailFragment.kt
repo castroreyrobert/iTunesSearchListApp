@@ -26,6 +26,7 @@ class SearchiTunesDetailFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment and Initialize views
         activity?.actionBar?.setDisplayHomeAsUpEnabled(true)
+        setHasOptionsMenu(true)
         val contentView =  inflater.inflate(R.layout.fragment_search_itunes_detail, container, false)
         val imageViewArtWork = contentView.findViewById(R.id.imageView2) as ImageView
         val textViewTrackName = contentView.findViewById(R.id.textViewTrackName) as TextView
