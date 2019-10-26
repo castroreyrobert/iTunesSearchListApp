@@ -2,6 +2,7 @@ package com.castrorr.itunessearchlist.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -18,9 +19,6 @@ import com.castrorr.itunessearchlist.model.dataclass.Track
 import com.castrorr.itunessearchlist.viewmodel.SearchiTunesListViewModel
 import com.google.android.material.snackbar.Snackbar
 
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -33,6 +31,7 @@ private const val ARG_PARAM2 = "param2"
 class SearchiTunesListFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
+    private var listener: OnFragmentInteractionListener? = null
 
     private lateinit var binding: SearchListFragmentBinding
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
@@ -43,20 +42,11 @@ class SearchiTunesListFragment : Fragment() {
         ViewModelProviders.of(this).get(SearchiTunesListViewModel::class.java)
     }
 
-
     private val itemClick: (Track) -> Unit =
         {
-            viewModel.saveTrackToPreference(it)
-            showListDetailFragment()
+            listener?.onListItemClick(track = it)
         }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -81,7 +71,7 @@ class SearchiTunesListFragment : Fragment() {
     /**
      * This method updates the track list when the user refreshes the view
      * and submit the list to the adapter.
-     * It also sets the visibility of the textview that displays the date when the user previously visited
+     * It also sets the visibility of the textView that displays the date when the user previously visited
      */
     private fun updatePosts(resource: Resource<List<Track>>?) {
         resource?.let {
@@ -93,14 +83,24 @@ class SearchiTunesListFragment : Fragment() {
             it.data?.let { trackList ->
                 adapter.submitList(trackList) //Submit the list to the adapter when success
                 viewModel.saveTrackListToPreference(trackList) // Save the list to the preference
-                textViewDate.text = viewModel.getPreviouslyVisitedDate()
                 textViewDate.visibility = View.VISIBLE
+                viewModel.getPreviouslyVisitedDate()?.let { dateString ->
+                    textViewDate.text = String.format(getString(R.string.previously_visited_date), dateString)  }
             }
             it.message?.let {
                 showSnackBarError()
                 textViewDate.visibility = View.INVISIBLE
+                adapter.submitList(null)
             }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            android.R.id.home ->
+                activity?.finish()
+        }
+        return true
     }
 
 
@@ -110,18 +110,14 @@ class SearchiTunesListFragment : Fragment() {
         }.show()
     }
 
-    private fun showListDetailFragment(){
-        val searchiTunesDetailFragment =
-            SearchiTunesDetailFragment.newInstance()
-        fragmentManager!!
-            .beginTransaction()
-            // 2
-            .replace(R.id.container, searchiTunesDetailFragment)
-            // 3
-            .addToBackStack(null)
-            .commit()
-    }
+    /**
+     * This interface can be implemented by the Activity, parent Fragment,
+     *   or a separate test implementation.
+     */
 
+    fun setOnFragmentInteractionListener(listener: OnFragmentInteractionListener){
+        this.listener = listener
+    }
 
     /**
      * This interface must be implemented by activities that contain this
@@ -134,7 +130,9 @@ class SearchiTunesListFragment : Fragment() {
      * (http://developer.android.com/training/basics/fragments/communicating.html)
      * for more information.
      */
-
+    interface OnFragmentInteractionListener {
+        fun onListItemClick(track: Track)
+    }
 
     companion object {
         /**
@@ -146,12 +144,7 @@ class SearchiTunesListFragment : Fragment() {
          * @return A new instance of fragment SearchiTunesListFragment.
          */
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SearchiTunesListFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance() =
+            SearchiTunesListFragment()
     }
 }

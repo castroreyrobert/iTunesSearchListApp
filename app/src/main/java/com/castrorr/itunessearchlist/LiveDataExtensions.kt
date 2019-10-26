@@ -2,6 +2,9 @@ package com.castrorr.itunessearchlist
 
 import androidx.lifecycle.MutableLiveData
 
+/**
+ * Extensions for the live data to be observed in viewModel
+ */
 fun <T> MutableLiveData<Resource<T>>.setSuccess(data: T) =
     postValue(Resource(ResourceState.SUCCESS, data))
 

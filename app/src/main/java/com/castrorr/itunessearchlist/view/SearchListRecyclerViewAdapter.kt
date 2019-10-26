@@ -11,6 +11,12 @@ import com.castrorr.itunessearchlist.model.dataclass.Track
 import kotlinx.android.synthetic.main.search_list_item.view.*
 
 
+/**
+ * This class is an adapter for the recycler view
+ *  @param itemClick which gets the track selected by the user to be saved in sharedPreferences
+ *
+ *  */
+
 class SearchListRecyclerViewAdapter( private val itemClick: (Track) -> Unit):
     ListAdapter<Track, SearchListRecyclerViewAdapter.ViewHolder> ((PostDiffCallback())) {
 
@@ -39,12 +45,15 @@ class SearchListRecyclerViewAdapter( private val itemClick: (Track) -> Unit):
         }
 
         private fun loadAvatar(imageUrl: String) {
-            Glide.with(itemView).load(imageUrl).into(itemView.imageViewArtwork)
+            Glide.with(itemView).load(imageUrl).placeholder(R.drawable.ic_image_loading).into(itemView.imageViewArtwork)
         }
 
     }
 }
 
+/**
+ * This class and Callback when the user selects an item in the list
+ */
     private class PostDiffCallback : DiffUtil.ItemCallback<Track>() {
         override fun areItemsTheSame(oldItem: Track, newItem: Track): Boolean =
             oldItem.trackId == newItem.trackId

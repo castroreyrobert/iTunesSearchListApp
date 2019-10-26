@@ -1,9 +1,7 @@
 package com.castrorr.itunessearchlist.view
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -25,8 +23,6 @@ class SearchiTunesDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment and Initialize views
-        activity?.actionBar?.setDisplayHomeAsUpEnabled(true)
-        setHasOptionsMenu(true)
         val contentView =  inflater.inflate(R.layout.fragment_search_itunes_detail, container, false)
         val imageViewArtWork = contentView.findViewById(R.id.imageView2) as ImageView
         val textViewTrackName = contentView.findViewById(R.id.textViewTrackName) as TextView
@@ -35,7 +31,7 @@ class SearchiTunesDetailFragment : Fragment() {
         viewModel.saveCurrentScreen()
         viewModel.getSavedTrack()?.let {
             track ->
-            Glide.with(contentView).load(track.artworkBig).placeholder(android.R.drawable.spinner_background).into(imageViewArtWork)
+            Glide.with(contentView).load(track.artworkBig).placeholder(R.drawable.ic_image_loading).into(imageViewArtWork)
             textViewDescription.text = track.longDescription
             textViewTrackName.text = track.trackName
         }
@@ -51,7 +47,6 @@ class SearchiTunesDetailFragment : Fragment() {
          */
         @JvmStatic
         fun newInstance() =
-            SearchiTunesDetailFragment().apply {
-                }
+            SearchiTunesDetailFragment()
             }
     }

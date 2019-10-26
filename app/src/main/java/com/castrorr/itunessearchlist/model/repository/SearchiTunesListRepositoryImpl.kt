@@ -1,11 +1,13 @@
 package com.castrorr.itunessearchlist.model.repository
 
-import android.content.SharedPreferences
 import com.castrorr.itunessearchlist.model.dataclass.Track
 import com.castrorr.itunessearchlist.model.datasource.SearchiTunesListDataSource
 import com.castrorr.itunessearchlist.model.datasource.SearchiTunesListDataSourceImpl
 import io.reactivex.Observable
 
+/**
+ * This class is an implementation to SearchiTunesListRepository interface
+ */
 class SearchiTunesListRepositoryImpl
     : SearchiTunesListRepository {
 
