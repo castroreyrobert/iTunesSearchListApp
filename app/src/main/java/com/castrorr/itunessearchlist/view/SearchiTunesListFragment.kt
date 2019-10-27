@@ -29,8 +29,6 @@ import com.google.android.material.snackbar.Snackbar
  * create an instance of this fragment.
  */
 class SearchiTunesListFragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
 
     private lateinit var binding: SearchListFragmentBinding
@@ -58,7 +56,9 @@ class SearchiTunesListFragment : Fragment() {
         swipeRefreshLayout = contentView.findViewById(R.id.swipe_refresh) as SwipeRefreshLayout
         textViewDate = contentView.findViewById(R.id.textViewDate)
         binding.viewModel = viewModel
-        viewModel.loadList()
+        if (savedInstanceState == null) {
+            viewModel.loadList()
+        }
         binding.searchListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         binding.searchListRecyclerView.adapter = adapter
         binding.searchListRecyclerView.setHasFixedSize(true)

@@ -16,7 +16,5 @@ data class Track (
     @field:Json(name = "artworkUrl100") val artworkBig:String,
     @field:Json(name = "trackPrice") val trackPrice: Float,
     @field:Json(name = "primaryGenreName") val genre: String,
-    @field:Json(name = "longDescription") val longDescription: String
+    @field:Json(name = "longDescription") val longDescription: String?
 )
-//fun List<Track>.mapToTrackList() : List<Track> = map { it.mapToDomain() }
-//fun Track.mapToDomain(): Track = Track(trackId, trackName, artworkSmall, artworkBig, trackPrice, genre, longDescription)

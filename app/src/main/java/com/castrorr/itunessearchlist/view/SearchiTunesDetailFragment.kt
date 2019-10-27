@@ -32,7 +32,8 @@ class SearchiTunesDetailFragment : Fragment() {
         viewModel.getSavedTrack()?.let {
             track ->
             Glide.with(contentView).load(track.artworkBig).placeholder(R.drawable.ic_image_loading).into(imageViewArtWork)
-            textViewDescription.text = track.longDescription
+            track.longDescription?.let { description -> textViewDescription.text = description  }
+                ?: kotlin.run {textViewDescription.text = getString(R.string.no_description)  }
             textViewTrackName.text = track.trackName
         }
         return contentView

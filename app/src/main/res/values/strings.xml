@@ -5,4 +5,5 @@
     <string name="error">There was an error getting the data. Please check internet connection</string>
     <string name="retry">Retry</string>
     <string name="previously_visited_date">Last Updated on %s </string>
+    <string name="no_description">No description</string>
 </resources>
