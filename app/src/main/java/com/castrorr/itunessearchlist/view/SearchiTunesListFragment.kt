@@ -14,7 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.castrorr.itunessearchlist.R
 import com.castrorr.itunessearchlist.Resource
 import com.castrorr.itunessearchlist.ResourceState
-import com.castrorr.itunessearchlist.databinding.SearchListFragmentBinding
+import com.castrorr.itunessearchlist.databinding.FragmentSearchListBinding
 import com.castrorr.itunessearchlist.model.dataclass.Track
 import com.castrorr.itunessearchlist.viewmodel.SearchiTunesListViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -31,7 +31,7 @@ import com.google.android.material.snackbar.Snackbar
 class SearchiTunesListFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
-    private lateinit var binding: SearchListFragmentBinding
+    private lateinit var binding: FragmentSearchListBinding
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var adapter: SearchListRecyclerViewAdapter
     private lateinit var textViewDate: TextView
@@ -50,9 +50,9 @@ class SearchiTunesListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val contentView = inflater.inflate(R.layout.search_list_fragment, container, false)
+        val contentView = inflater.inflate(R.layout.fragment_search_list, container, false)
         adapter = SearchListRecyclerViewAdapter(itemClick)
-        binding = SearchListFragmentBinding.bind(contentView)
+        binding = FragmentSearchListBinding.bind(contentView)
         swipeRefreshLayout = contentView.findViewById(R.id.swipe_refresh) as SwipeRefreshLayout
         textViewDate = contentView.findViewById(R.id.textViewDate)
         binding.viewModel = viewModel
@@ -139,8 +139,6 @@ class SearchiTunesListFragment : Fragment() {
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
          * @return A new instance of fragment SearchiTunesListFragment.
          */
         @JvmStatic

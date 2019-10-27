@@ -31,8 +31,7 @@ class SearchiTunesListViewModel (application: Application): AndroidViewModel(app
 
     /**
      * This method load the list when the user refreshes or opens the app.
-     * @param isRefresh is true when the user opens the app for the first time or refreshes the list.
-     *  if @param isRefresh is false, it will load the saved trackList from the sharedPreference.
+     *
      */
     fun loadList() {
         getSavedList()?.let {

@@ -17,6 +17,7 @@ import com.castrorr.itunessearchlist.viewmodel.SearchiTunesDetailFragmentViewMod
  * create an instance of this fragment.
  */
 class SearchiTunesDetailFragment : Fragment() {
+    private  val viewModel by lazy {  ViewModelProviders.of(this).get(SearchiTunesDetailFragmentViewModel::class.java) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,14 +28,15 @@ class SearchiTunesDetailFragment : Fragment() {
         val imageViewArtWork = contentView.findViewById(R.id.imageView2) as ImageView
         val textViewTrackName = contentView.findViewById(R.id.textViewTrackName) as TextView
         val textViewDescription = contentView.findViewById<TextView>(R.id.textViewDescription)
-        val viewModel =  ViewModelProviders.of(this).get(SearchiTunesDetailFragmentViewModel::class.java)
-        viewModel.saveCurrentScreen()
-        viewModel.getSavedTrack()?.let {
-            track ->
-            Glide.with(contentView).load(track.artworkBig).placeholder(R.drawable.ic_image_loading).into(imageViewArtWork)
-            track.longDescription?.let { description -> textViewDescription.text = description  }
-                ?: kotlin.run {textViewDescription.text = getString(R.string.no_description)  }
-            textViewTrackName.text = track.trackName
+        if (savedInstanceState == null) {
+            viewModel.saveCurrentScreen()
+            viewModel.getSavedTrack()?.let { track ->
+                Glide.with(contentView).load(track.artworkBig)
+                    .placeholder(R.drawable.ic_image_loading).into(imageViewArtWork)
+                track.longDescription?.let { description -> textViewDescription.text = description }
+                    ?: kotlin.run { textViewDescription.text = getString(R.string.no_description) }
+                textViewTrackName.text = track.trackName
+            }
         }
         return contentView
     }
