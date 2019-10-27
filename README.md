@@ -16,6 +16,6 @@ iTunesSearchListApp is an Android app which displays a list of items obtained fr
    3. Libraries:
       - [RXJava](https://github.com/ReactiveX/RxJava) for data holders.
       - [Retrofit](https://square.github.io/retrofit/) for http requests.
-      - [moshi](https://github.com/square/moshi)) for Json library for Android.
+      - [moshi](https://github.com/square/moshi) for Json library for Android.
       - [Glide](https://github.com/bumptech/glide)for loading image into the imageview.
     
