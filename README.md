@@ -14,8 +14,8 @@ iTunesSearchListApp is an Android app which displays a list of items obtained fr
    1. MVVM Architecture - I used this architecture since this architecture enhances separation of concerns, it allows separating the user interface logic from the business (or the back-end) logic. 
    2. Repository pattern - I used this pattern in the model part since it decouples application from the data sources and testable business logic via Unit Tests
    3. Libraries:
-      - ([RXJava](https://github.com/ReactiveX/RxJava)) for data holders.
-      - ([Retrofit](https://square.github.io/retrofit/)) for http requests.
-      - ([moshi](https://github.com/square/moshi)) for Json library for Android.
-      - ([Glide](https://github.com/bumptech/glide))for loading image into the imageview).
+      - [RXJava](https://github.com/ReactiveX/RxJava) for data holders.
+      - [Retrofit](https://square.github.io/retrofit/) for http requests.
+      - [moshi](https://github.com/square/moshi)) for Json library for Android.
+      - [Glide](https://github.com/bumptech/glide)for loading image into the imageview.
     
