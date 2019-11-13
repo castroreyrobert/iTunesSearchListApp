@@ -62,7 +62,7 @@ class SearchiTunesListFragment : Fragment() {
         binding.searchListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         binding.searchListRecyclerView.adapter = adapter
         binding.searchListRecyclerView.setHasFixedSize(true)
-        viewModel.trackList.observe(this, Observer { updatePosts(it) })
+        viewModel.trackList.observe(this, Observer { updateLists(it) })
         swipeRefreshLayout.setOnRefreshListener { viewModel.refreshList() }
 
         return contentView
@@ -73,7 +73,7 @@ class SearchiTunesListFragment : Fragment() {
      * and submit the list to the adapter.
      * It also sets the visibility of the textView that displays the date when the user previously visited
      */
-    private fun updatePosts(resource: Resource<List<Track>>?) {
+    private fun updateLists(resource: Resource<List<Track>>?) {
         resource?.let {
             when (it.state) {
                 ResourceState.LOADING -> swipeRefreshLayout.isRefreshing = true
