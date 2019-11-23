@@ -10,14 +10,16 @@
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="6dp"
-    app:cardElevation="6dp"
-    android:elevation="@dimen/cardview_default_elevation"
+    card_view:cardElevation="8dp"
+    card_view:cardCornerRadius="8dp"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    card_view:compatPadding="true"
-    android:padding="8dp">
+    card_view:compatPadding="true">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,10 +28,10 @@
 
             <ImageView
                 android:id="@+id/imageViewArtwork"
-                android:layout_width="72dp"
+                android:layout_width="85dp"
                 android:layout_height="80dp"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="8dp"
+                android:scaleType="fitXY"
                 app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -39,7 +41,7 @@
                 android:id="@+id/linearLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="16dp"
                 android:layout_marginStart="16dp"
                 android:orientation="vertical"
                 app:layout_constraintStart_toEndOf="@+id/imageViewArtwork"
@@ -51,23 +53,29 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="Track name"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+                    android:text="@string/track_name"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/textViewPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Price"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                    android:text="@string/price"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/textViewGenre"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Genre"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                    android:text="@string/genre"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
             </LinearLayout>
         </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginStart="101dp"/>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
 <!--</androidx.constraintlayout.widget.ConstraintLayout>-->

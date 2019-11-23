@@ -20,6 +20,7 @@
         android:visibility="invisible"
         android:text= "@string/previously_visited_date"
         android:layout_margin="8dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
         android:padding="8dp"
         android:elevation="@dimen/cardview_default_elevation"/>
 

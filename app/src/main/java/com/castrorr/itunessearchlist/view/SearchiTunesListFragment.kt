@@ -33,10 +33,10 @@ class SearchiTunesListFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchListBinding
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
-    private lateinit var adapter: SearchListRecyclerViewAdapter
+    private lateinit var mAdapter: SearchListRecyclerViewAdapter
     private lateinit var textViewDate: TextView
 
-    private val viewModel by lazy {
+    private val mViewModel by lazy {
         ViewModelProviders.of(this).get(SearchiTunesListViewModel::class.java)
     }
 
@@ -51,20 +51,23 @@ class SearchiTunesListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val contentView = inflater.inflate(R.layout.fragment_search_list, container, false)
-        adapter = SearchListRecyclerViewAdapter(itemClick)
-        binding = FragmentSearchListBinding.bind(contentView)
         swipeRefreshLayout = contentView.findViewById(R.id.swipe_refresh) as SwipeRefreshLayout
         textViewDate = contentView.findViewById(R.id.textViewDate)
-        binding.viewModel = viewModel
-        if (savedInstanceState == null) {
-            viewModel.loadList()
+        mAdapter = SearchListRecyclerViewAdapter(itemClick)
+        binding = FragmentSearchListBinding.bind(contentView)
+        binding.apply{
+            searchListRecyclerView.apply {
+                layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+                adapter = mAdapter
+                setHasFixedSize(true)
+            }
+            binding.viewModel = mViewModel
         }
-        binding.searchListRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        binding.searchListRecyclerView.adapter = adapter
-        binding.searchListRecyclerView.setHasFixedSize(true)
-        viewModel.trackList.observe(this, Observer { updateLists(it) })
-        swipeRefreshLayout.setOnRefreshListener { viewModel.refreshList() }
-
+        if (savedInstanceState == null) {
+            mViewModel.loadList()
+        }
+        mViewModel.trackList.observe(this, Observer { updateLists(it) })
+        swipeRefreshLayout.setOnRefreshListener { mViewModel.refreshList() }
         return contentView
         }
 
@@ -81,16 +84,16 @@ class SearchiTunesListFragment : Fragment() {
                 ResourceState.ERROR -> swipeRefreshLayout.isRefreshing = false
             }
             it.data?.let { trackList ->
-                adapter.submitList(trackList) //Submit the list to the adapter when success
-                viewModel.saveTrackListToPreference(trackList) // Save the list to the preference
+                mAdapter.submitList(trackList) //Submit the list to the adapter when success
+                mViewModel.saveTrackListToPreference(trackList) // Save the list to the preference
                 textViewDate.visibility = View.VISIBLE
-                viewModel.getPreviouslyVisitedDate()?.let { dateString ->
+                mViewModel.getPreviouslyVisitedDate()?.let { dateString ->
                     textViewDate.text = String.format(getString(R.string.previously_visited_date), dateString)  }
             }
             it.message?.let {
                 showSnackBarError()
                 textViewDate.visibility = View.INVISIBLE
-                adapter.submitList(null)
+                mAdapter.submitList(null)
             }
         }
     }
@@ -106,7 +109,7 @@ class SearchiTunesListFragment : Fragment() {
 
     private fun showSnackBarError(){
         Snackbar.make(swipeRefreshLayout, getString(R.string.error), Snackbar.LENGTH_INDEFINITE)
-                .setAction(getString(R.string.retry)) {viewModel.refreshList()
+                .setAction(getString(R.string.retry)) {mViewModel.refreshList()
         }.show()
     }
 

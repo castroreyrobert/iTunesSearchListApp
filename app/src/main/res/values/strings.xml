@@ -6,4 +6,11 @@
     <string name="retry">Retry</string>
     <string name="previously_visited_date">Last Updated on %s </string>
     <string name="no_description">No description</string>
+    <string name="trackname">TrackName</string>
+    <string name="description">Description</string>
+    <string name="track_image">Track Image</string>
+    <string name="genre">Genre</string>
+    <string name="track_name">Track name</string>
+    <string name="price">$%1$s</string>
+
 </resources>
