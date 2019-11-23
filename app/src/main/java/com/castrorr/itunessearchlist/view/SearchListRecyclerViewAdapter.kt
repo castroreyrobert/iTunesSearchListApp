@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.castrorr.itunessearchlist.R
 import com.castrorr.itunessearchlist.model.dataclass.Track
 import kotlinx.android.synthetic.main.search_list_item.view.*
@@ -28,7 +29,7 @@ class SearchListRecyclerViewAdapter( private val itemClick: (Track) -> Unit):
         holder.bind(getItem(position))
     }
 
-    inner class ViewHolder(parent: ViewGroup) :
+    inner class ViewHolder(private val parent: ViewGroup) :
         RecyclerView.ViewHolder(
             LayoutInflater.from(parent.context).inflate(
               R.layout.search_list_item,
@@ -40,12 +41,12 @@ class SearchListRecyclerViewAdapter( private val itemClick: (Track) -> Unit):
             loadAvatar(item.artworkSmall)
             itemView.textViewTrackName.text = item.trackName
             itemView.textViewGenre.text = item.genre
-            itemView.textViewPrice.text = item.trackPrice.toString()
+            itemView.textViewPrice.text = """${"$"}${item.trackPrice}"""
             itemView.setOnClickListener { itemClick.invoke(item) }
         }
 
         private fun loadAvatar(imageUrl: String) {
-            Glide.with(itemView).load(imageUrl).placeholder(R.drawable.ic_image_loading).into(itemView.imageViewArtwork)
+            Glide.with(itemView).load(imageUrl).apply(RequestOptions.centerInsideTransform()).placeholder(R.drawable.ic_image_loading).into(itemView.imageViewArtwork)
         }
 
     }

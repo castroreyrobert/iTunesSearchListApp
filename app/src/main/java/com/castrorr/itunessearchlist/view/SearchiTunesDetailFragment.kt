@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.castrorr.itunessearchlist.R
 import com.castrorr.itunessearchlist.viewmodel.SearchiTunesDetailFragmentViewModel
 
@@ -31,7 +32,7 @@ class SearchiTunesDetailFragment : Fragment() {
         if (savedInstanceState == null) {
             viewModel.saveCurrentScreen()
             viewModel.getSavedTrack()?.let { track ->
-                Glide.with(contentView).load(track.artworkBig)
+                Glide.with(contentView).load(track.artworkBig).apply(RequestOptions.fitCenterTransform())
                     .placeholder(R.drawable.ic_image_loading).into(imageViewArtWork)
                 track.longDescription?.let { description -> textViewDescription.text = description }
                     ?: kotlin.run { textViewDescription.text = getString(R.string.no_description) }
