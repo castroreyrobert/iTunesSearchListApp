@@ -1,5 +1,7 @@
-# iTunesSearchListApp
-iTunesSearchListApp is an Android app which displays a list of items obtained from an iTunes Search API and show a detailed view of each item.
+# MyCodingChallenge
+
+# Objectives:
+Create a master-detail application that contains at least one dependency. This application should display a list of items    obtained from a iTunes Search API and show a detailed view of each item.
 
 
 ## Data to be saved:
