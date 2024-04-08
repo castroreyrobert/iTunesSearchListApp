@@ -1,4 +1,4 @@
-# MyCodingChallenge
+# MyCodingChallenge (Appetiser)
 
 # Objectives:
 Create a master-detail application that contains at least one dependency. This application should display a list of items    obtained from a iTunes Search API and show a detailed view of each item.
